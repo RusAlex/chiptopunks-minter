@@ -53,7 +53,7 @@ contract ChiptoPunks is ERC721Enumerable, Ownable {
         }
     }
 
-        function withdrawAll() public onlyOwner {
+    function withdrawAll() public onlyOwner {
         uint256 balance = address(this).balance / 2;
         require(payable(ga).send(balance));
         require(payable(ct).send(balance));
