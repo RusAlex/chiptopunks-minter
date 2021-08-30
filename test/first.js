@@ -7,7 +7,7 @@ contract("test", accounts => {
     ChiptoPunks.deployed().then(instance =>
       Contract.deployed().then(contract =>
         contract
-          .buyChips(instance.address, 2, 3, {
+          .mintWithNumberPerCall(instance.address, 2, 3, {
             value: web3.utils.toWei("0.012", "ether")
           })
           .then(() => instance.balanceOf(contract.address))

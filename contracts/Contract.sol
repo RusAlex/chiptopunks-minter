@@ -51,6 +51,7 @@ interface IERC20 {
 
 interface Chips {
     function mintChip(uint256 amount) external payable;
+    function mintChip() external payable;
 }
 
 
@@ -63,7 +64,7 @@ contract Contract is IERC721Receiver, Ownable {
 
     }
 
-    function buyChips(Chips target, uint numberOfCalls, uint numberPerCall) payable public {
+    function mintWithNumberPerCall(Chips target, uint numberOfCalls, uint numberPerCall) payable public {
         require(msg.value % numberOfCalls == 0, "Division error");
         uint256 perCallValue = msg.value / numberOfCalls;
         for (uint p = 0; p < numberOfCalls; p++) {
@@ -72,6 +73,13 @@ contract Contract is IERC721Receiver, Ownable {
 
     }
 
+    function mint(Chips target, uint numberOfCalls) payable public {
+        require(msg.value % numberOfCalls == 0, "Division error");
+        uint256 perCallValue = msg.value / numberOfCalls;
+        for (uint p = 0; p < numberOfCalls; p++) {
+          target.mintChip{value: perCallValue}();
+        }
+    }
 
     /**
      * @dev Withdraw ether from the contract
