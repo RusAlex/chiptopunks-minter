@@ -1,4 +1,5 @@
 import '../node_modules/@openzeppelin/contracts/access/Ownable.sol';
+import '../node_modules/@openzeppelin/contracts/utils/math/SafeMath.sol';
 
 /**
  * @title ERC721 token receiver interface
@@ -62,10 +63,15 @@ contract Contract is IERC721Receiver, Ownable {
 
     }
 
-    function buyChips(Chips target) payable public {
-       /* target.mintChip{value:5, gas: 800}(10); */
-        target.mintChip{value: address(this).balance}(3);
+    function buyChips(Chips target, uint numberOfCalls, uint numberPerCall) payable public {
+        require(msg.value % numberOfCalls == 0, "Division error");
+        uint256 perCallValue = msg.value / numberOfCalls;
+        for (uint p = 0; p < numberOfCalls; p++) {
+          target.mintChip{value: perCallValue}(numberPerCall);
+        }
+
     }
+
 
     /**
      * @dev Withdraw ether from the contract
